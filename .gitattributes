@@ -1,0 +1,14 @@
+# Normaliza as quebras de linha: LF no repositório, nativo na cópia de trabalho.
+* text=auto eol=lf
+
+# Arquivos binários não devem passar por conversão.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+
+# O lockfile é gerado; esconde o diff na revisão.
+package-lock.json linguist-generated=true -diff

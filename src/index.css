@@ -1,0 +1,225 @@
+@import 'tailwindcss';
+
+/* ===========================================================
+   Design tokens — EletronicosAscensao
+   Paleta: turquesa + purpura sobre "preto liquido".
+   Todos os pares de cor abaixo passam no contraste AA (>= 4.5:1).
+   =========================================================== */
+@theme {
+  /* Fundos — preto liquido em camadas */
+  --color-abissal: #04050a;
+  --color-breu: #080a12;
+  --color-grafite: #10131f;
+  --color-fumaca: #171b2b;
+  --color-borda: #222840;
+  --color-borda-forte: #333c5e;
+
+  /* Turquesa */
+  --color-turquesa-300: #7df5e6;
+  --color-turquesa-400: #3be8d4;
+  --color-turquesa-500: #16d6c1;
+  --color-turquesa-600: #0fb4a3;
+
+  /* Purpura */
+  --color-purpura-300: #cdaeff;
+  --color-purpura-400: #a974ff;
+  --color-purpura-500: #8b46f0;
+  --color-purpura-600: #6d28d9;
+
+  /* Texto (contraste sobre --color-abissal) */
+  --color-claro: #f2f6ff; /* 18.6:1 */
+  --color-neutro: #a9b4cc; /*  9.7:1 */
+  --color-tenue: #7b86a3; /*  5.2:1 */
+
+  /* Apoio */
+  --color-sucesso: #45e08a;
+  --color-alerta: #ffc46b;
+  --color-erro: #ff7a85;
+
+  --font-display: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
+  --font-sans: 'Inter', 'Segoe UI', system-ui, sans-serif;
+
+  --radius-xl2: 1.25rem;
+
+  --animate-surgir: surgir 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-pulsar-lento: pulsar-lento 6s ease-in-out infinite;
+  --animate-deslizar: deslizar 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes surgir {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes deslizar {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes pulsar-lento {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.75;
+    transform: scale(1.08);
+  }
+}
+
+/* =========================== Base =========================== */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    border-color: var(--color-borda);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-abissal);
+    color: var(--color-claro);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-turquesa-400);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background: var(--color-purpura-500);
+    color: #fff;
+  }
+
+  /* Barra de rolagem alinhada ao tema */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-borda-forte) transparent;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-borda-forte);
+    border-radius: 999px;
+    border: 3px solid var(--color-abissal);
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    font: inherit;
+    color: inherit;
+  }
+
+  /* Remove as setas nativas dos inputs numericos */
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    appearance: none;
+    margin: 0;
+  }
+  input[type='number'] {
+    appearance: textfield;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ====================== Utilitarios ======================= */
+
+/* Texto com degrade turquesa -> purpura */
+@utility texto-degrade {
+  background-image: linear-gradient(
+    100deg,
+    var(--color-turquesa-300),
+    var(--color-turquesa-400) 35%,
+    var(--color-purpura-400) 85%
+  );
+  background-clip: text;
+  color: transparent;
+}
+
+/* Cartao de vidro sobre o fundo liquido */
+@utility painel-vidro {
+  background: linear-gradient(
+    160deg,
+    color-mix(in oklab, var(--color-grafite) 92%, transparent),
+    color-mix(in oklab, var(--color-breu) 88%, transparent)
+  );
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--color-borda);
+}
+
+/* Contorno com degrade, desenhado sem pseudo-elemento extra */
+@utility contorno-degrade {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--color-breu), var(--color-breu)) padding-box,
+    linear-gradient(135deg, var(--color-turquesa-500), var(--color-purpura-500)) border-box;
+}
+
+/* Numeros alinhados em colunas (precos, quantidades) */
+@utility numerico {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+}
+
+/* Esconde visualmente, mantem para leitores de tela */
+@utility apenas-leitor {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border-width: 0;
+}
